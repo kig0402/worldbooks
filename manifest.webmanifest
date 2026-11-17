@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "책틈 · 세계문학 랜덤 큐레이션",
+  "short_name": "책틈",
+  "description": "세계문학 속 다음 한 권을 발견하는 앱",
+  "lang": "ko-KR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f2ec",
+  "theme_color": "#34594b",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
