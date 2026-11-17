@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f5f2ec"><title>책틈 — 세계문학 랜덤 큐레이션</title>
+<meta name="theme-color" content="#f5f2ec"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="책틈"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="./icon.svg"><title>책틈 — 세계문학 랜덤 큐레이션</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Serif+KR:wght@400;500;600;700&display=swap');
 :root{--paper:#f5f2ec;--ink:#25251f;--muted:#797970;--line:#dedbd2;--green:#34594b;--lime:#c8d59a;--serif:'Noto Serif KR',Georgia,serif;--sans:'DM Sans','Noto Sans KR',sans-serif}
@@ -38,4 +38,5 @@ function render(i){current=i;const b=books[i];let oldCover=document.getElementBy
 function random(){let pool=books.map((b,i)=>i).filter(i=>(filter==='전체'||books[i].filter.includes(filter))&&!seen.includes(books[i].title));if(!pool.length){const eligible=books.filter(b=>filter==='전체'||b.filter.includes(filter));seen=eligible.length===books.length?[]:seen.filter(t=>!eligible.some(b=>b.title===t));pool=books.map((b,i)=>i).filter(i=>(filter==='전체'||books[i].filter.includes(filter))&&!seen.includes(books[i].title))}if(!pool.length)return;const pick=pool[Math.floor(Math.random()*pool.length)];seen.push(books[pick].title);sessionStorage.setItem('booktumn_seen',JSON.stringify(seen));render(pick)}
 function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2100)}
 document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.querySelector('.chip.active').classList.remove('active');c.classList.add('active');filter=c.dataset.filter;seen=[];random()});$('randomBtn').onclick=random;$('saveBtn').onclick=()=>{const title=books[current].title;saved.has(title)?saved.delete(title):saved.add(title);$('savedCount').textContent=saved.size;render(current);toast(saved.has(title)?'책장에 담았어요.':'책장에서 꺼냈어요.')};$('saveTop').onclick=()=>toast(saved.size?`저장한 책 ${saved.size}권 · ${[...saved].join(', ')}`:'아직 저장한 책이 없어요.');$('aboutBtn').onclick=()=>toast('세계문학 속 다음 한 권을 가볍게 발견하는 곳이에요.');render(0);
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}
 </script></body></html>
