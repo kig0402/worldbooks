@@ -1,6 +1,6 @@
-const CACHE = "worldbooks-mobile-v1";
+const CACHE = "worldbooks-mobile-v2";
 const ROOT = new URL("./", self.registration.scope);
-const CORE = ["", "index.html", "manifest.webmanifest", "icon.svg"].map(path => new URL(path, ROOT).href);
+const CORE = ["", "index.html", "manifest.webmanifest", "icon.svg", "icon-192.png"].map(path => new URL(path, ROOT).href);
 const APP = new URL("index.html", ROOT).href;
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
