@@ -22,39 +22,44 @@
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
 
   <style>
     /* -------------------------------------------------------------------------
        커스텀 테마 변수 (양장본 파피루스 / 미드나잇 다크 / 새벽 슬레이트)
        ------------------------------------------------------------------------- */
     :root.theme-parchment {
-      --bg-main: #F6F3EB;
+      --bg-main: #F4EFE6;
       --bg-card: #FFFFFF;
-      --bg-inner: #FCFAF5;
-      --text-primary: #2C2621;
-      --text-secondary: #6B6156;
-      --text-muted: #9E9182;
-      --border-color: #E8E2D5;
-      --accent-color: #934B22;
-      --accent-bg: #F4EBE2;
-      --highlight-box: #F8F3EA;
-      --quote-bg: #F3ECE0;
+      --bg-inner: #F8F5EE;
+      --text-primary: #1C1917; /* 깊고 짙은 흑갈색 - 최고 가독성 */
+      --text-secondary: #44403C; /* 짙은 웜 그레이 */
+      --text-muted: #78716C; /* 가독성 있는 보조 텍스트 */
+      --border-color: #E2DACB;
+      --accent-color: #8C2D19;
+      --accent-bg: #F7EDE8;
+      --highlight-box: #F5EFE4;
+      --quote-bg: #F2EADA;
       --card-shadow: 0 12px 30px -8px rgba(78, 64, 45, 0.12);
       --book-shadow: 0 10px 24px -4px rgba(44, 38, 33, 0.28), 0 2px 6px -1px rgba(44, 38, 33, 0.15);
     }
 
     :root.theme-dark {
-      --bg-main: #111215;
-      --bg-card: #1B1D22;
-      --bg-inner: #242730;
-      --text-primary: #ECEEF2;
-      --text-secondary: #A2A7B5;
-      --text-muted: #6E7585;
-      --border-color: #2F3340;
-      --accent-color: #D4AF37;
-      --accent-bg: #2C281B;
-      --highlight-box: #232732;
-      --quote-bg: #29261C;
+      --bg-main: #0B0D11;
+      --bg-card: #14171E;
+      --bg-inner: #1C2029;
+      --text-primary: #F8FAFC; /* 선명하고 밝은 오프화이트 - 어둠 속 최고 가독성 */
+      --text-secondary: #CBD5E1; /* 부드럽고 선명한 실버 */
+      --text-muted: #8E96A4;
+      --border-color: #2D3342;
+      --accent-color: #E2B842;
+      --accent-bg: #2B2616;
+      --highlight-box: #1A1F2B;
+      --quote-bg: #222019;
       --card-shadow: 0 14px 34px -8px rgba(0, 0, 0, 0.7);
       --book-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.6), 0 2px 8px -1px rgba(0, 0, 0, 0.4);
     }
@@ -63,16 +68,30 @@
       --bg-main: #F1F5F9;
       --bg-card: #FFFFFF;
       --bg-inner: #F8FAFC;
-      --text-primary: #0F172A;
-      --text-secondary: #475569;
-      --text-muted: #94A3B8;
-      --border-color: #E2E8F0;
-      --accent-color: #2563EB;
+      --text-primary: #0F172A; /* 깊고 선명한 네이비 슬레이트 블랙 */
+      --text-secondary: #334155; /* 짙고 뚜렷한 슬레이트 차콜 */
+      --text-muted: #64748B;
+      --border-color: #CBD5E1;
+      --accent-color: #1D4ED8;
       --accent-bg: #EFF6FF;
       --highlight-box: #F1F5F9;
-      --quote-bg: #EBF3FF;
+      --quote-bg: #E3EEFC;
       --card-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.08);
       --book-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.2), 0 2px 6px -1px rgba(15, 23, 42, 0.1);
+    }
+
+    /* 테마 텍스트 전용 유틸리티 클래스 */
+    .text-theme-primary {
+      color: var(--text-primary) !important;
+    }
+    .text-theme-secondary {
+      color: var(--text-secondary) !important;
+    }
+    .text-theme-muted {
+      color: var(--text-muted) !important;
+    }
+    .text-theme-accent {
+      color: var(--accent-color) !important;
     }
 
     /* 화면 전체 넘침 방지: 바깥 스크롤 100% 차단 */
@@ -388,18 +407,18 @@
 
             <!-- 책 서지 & 평점 헤더 -->
             <div class="flex-1 min-w-0">
-              <h2 id="cardTitle" class="font-serif font-black text-lg sm:text-xl tracking-tight leading-snug" style="color: var(--text-primary)">
+              <h2 id="cardTitle" class="font-serif font-black text-lg sm:text-xl tracking-tight leading-snug text-theme-primary" style="color: var(--text-primary)">
                 --
               </h2>
-              <p id="cardTitleEn" class="text-[11px] font-latin-serif italic text-neutral-500 truncate mt-0.5">
+              <p id="cardTitleEn" class="text-[11px] font-latin-serif italic truncate mt-0.5 text-theme-muted" style="color: var(--text-muted)">
                 --
               </p>
               
               <div class="mt-1.5 flex items-baseline gap-1 text-xs">
-                <span id="cardAuthor" class="font-semibold text-neutral-800 dark:text-neutral-200">--</span>
-                <span id="cardTranslator" class="text-neutral-500 text-[11px]">--</span>
+                <span id="cardAuthor" class="font-bold text-theme-primary" style="color: var(--text-primary)">--</span>
+                <span id="cardTranslator" class="text-[11px] font-medium text-theme-secondary" style="color: var(--text-secondary)">--</span>
               </div>
-              <p id="cardCountryEra" class="text-[11px] text-neutral-400 mt-0.5">
+              <p id="cardCountryEra" class="text-[11px] mt-0.5 text-theme-muted" style="color: var(--text-muted)">
                 --
               </p>
 
@@ -409,7 +428,7 @@
                   <!-- 별 SVG -->
                 </div>
                 <span id="cardRatingScore" class="font-bold text-xs text-amber-600 dark:text-amber-400">4.8</span>
-                <span id="cardReviewsCount" class="text-[10px] text-neutral-400">(리뷰 3,420+)</span>
+                <span id="cardReviewsCount" class="text-[10px] text-theme-muted" style="color: var(--text-muted)">(리뷰 3,420+)</span>
               </div>
 
               <!-- 태그 필스 -->
@@ -425,7 +444,7 @@
               <span>📖</span>
               <span>핵심 줄거리</span>
             </div>
-            <p id="cardPlot" class="text-readable text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed text-justify">
+            <p id="cardPlot" class="text-readable text-xs sm:text-sm leading-relaxed text-justify font-normal text-theme-primary" style="color: var(--text-primary)">
               --
             </p>
           </div>
@@ -436,7 +455,7 @@
               <span>🎯</span>
               <span>작품의 주제 & 의의</span>
             </div>
-            <p id="cardTheme" class="text-readable text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
+            <p id="cardTheme" class="text-readable text-xs sm:text-sm leading-relaxed font-normal text-theme-primary" style="color: var(--text-primary)">
               --
             </p>
           </div>
@@ -446,7 +465,7 @@
             <div class="flex items-center gap-1 mb-1 text-[11px] font-bold tracking-wider uppercase" style="color: var(--accent-color)">
               <span>💬 대표 명문장</span>
             </div>
-            <p id="cardQuote" class="font-serif italic text-xs sm:text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed font-medium">
+            <p id="cardQuote" class="font-serif italic text-xs sm:text-sm leading-relaxed font-semibold text-theme-primary" style="color: var(--text-primary)">
               --
             </p>
           </div>
@@ -457,17 +476,17 @@
               <span>💡</span>
               <span>오늘의 독서 화두</span>
             </div>
-            <p id="cardReadingPoint" class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            <p id="cardReadingPoint" class="text-xs leading-relaxed font-medium text-theme-secondary" style="color: var(--text-secondary)">
               --
             </p>
           </div>
 
           <!-- 섹션 5: 📑 도서 상세 서지 및 구매 링크 -->
-          <div class="flex items-center justify-between pt-1 pb-1 text-[11px] text-neutral-400 border-t" style="border-color: var(--border-color)">
+          <div class="flex items-center justify-between pt-1 pb-1 text-[11px] border-t" style="border-color: var(--border-color); color: var(--text-muted)">
             <div class="flex items-center gap-2">
-              <span>분량: <b id="cardPageCount" class="text-neutral-600 dark:text-neutral-300">--</b></span>
+              <span>분량: <b id="cardPageCount" class="font-semibold text-theme-primary" style="color: var(--text-primary)">--</b></span>
               <span>·</span>
-              <span>ISBN: <b id="cardIsbn" class="text-neutral-600 dark:text-neutral-300">--</b></span>
+              <span>ISBN: <b id="cardIsbn" class="font-semibold text-theme-primary" style="color: var(--text-primary)">--</b></span>
             </div>
             <a id="cardKyoboLink" href="#" target="_blank" rel="noopener" class="font-bold underline hover:opacity-80 flex items-center gap-0.5" style="color: var(--accent-color)">
               교보문고에서 보기 ↗
@@ -581,8 +600,8 @@
   </div>
 
   <!-- 앱 스크립트 로드 (순서: 데이터베이스 -> 앱 로직) -->
-  <script src="./books.js?v=2.1"></script>
-  <script src="./app.js?v=2.1"></script>
+  <script src="./books.js?v=2.2"></script>
+  <script src="./app.js?v=2.2"></script>
 
   <!-- PWA 서비스워커 등록 -->
   <script>

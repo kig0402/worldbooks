@@ -161,8 +161,11 @@ function applyTheme(theme) {
   state.currentTheme = theme;
   localStorage.setItem('worldbooks_theme', theme);
   const root = document.documentElement;
-  root.classList.remove('theme-parchment', 'theme-dark', 'theme-slate');
+  root.classList.remove('theme-parchment', 'theme-dark', 'theme-slate', 'dark');
   root.classList.add(`theme-${theme}`);
+  if (theme === 'dark') {
+    root.classList.add('dark');
+  }
 }
 
 function cycleTheme() {
