@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-parchment">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>책틈 · 세계문학전집 | 매일 만나는 고전의 지혜</title>
+
+  <!-- PWA & Mobile Web App Meta Tags -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#934B22">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="책틈 세계문학">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+
+  <!-- 구글 폰트: 한글 명조(Noto Serif KR), 영문 세리프(Cormorant Garamond), 본문(Pretendard) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Noto+Serif+KR:wght@400;600;700;900&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* -------------------------------------------------------------------------
+       커스텀 테마 변수 (양장본 파피루스 / 미드나잇 다크 / 새벽 슬레이트)
+       ------------------------------------------------------------------------- */
+    :root.theme-parchment {
+      --bg-main: #F6F3EB;
+      --bg-card: #FFFFFF;
+      --bg-inner: #FCFAF5;
+      --text-primary: #2C2621;
+      --text-secondary: #6B6156;
+      --text-muted: #9E9182;
+      --border-color: #E8E2D5;
+      --accent-color: #934B22;
+      --accent-bg: #F4EBE2;
+      --highlight-box: #F8F3EA;
+      --quote-bg: #F3ECE0;
+      --card-shadow: 0 12px 30px -8px rgba(78, 64, 45, 0.12);
+      --book-shadow: 0 10px 24px -4px rgba(44, 38, 33, 0.28), 0 2px 6px -1px rgba(44, 38, 33, 0.15);
+    }
+
+    :root.theme-dark {
+      --bg-main: #111215;
+      --bg-card: #1B1D22;
+      --bg-inner: #242730;
+      --text-primary: #ECEEF2;
+      --text-secondary: #A2A7B5;
+      --text-muted: #6E7585;
+      --border-color: #2F3340;
+      --accent-color: #D4AF37;
+      --accent-bg: #2C281B;
+      --highlight-box: #232732;
+      --quote-bg: #29261C;
+      --card-shadow: 0 14px 34px -8px rgba(0, 0, 0, 0.7);
+      --book-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.6), 0 2px 8px -1px rgba(0, 0, 0, 0.4);
+    }
+
+    :root.theme-slate {
+      --bg-main: #F1F5F9;
+      --bg-card: #FFFFFF;
+      --bg-inner: #F8FAFC;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --border-color: #E2E8F0;
+      --accent-color: #2563EB;
+      --accent-bg: #EFF6FF;
+      --highlight-box: #F1F5F9;
+      --quote-bg: #EBF3FF;
+      --card-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.08);
+      --book-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.2), 0 2px 6px -1px rgba(15, 23, 42, 0.1);
+    }
+
+    /* 화면 전체 넘침 방지: 바깥 스크롤 100% 차단 */
+    html, body {
+      height: 100%;
+      height: 100dvh;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      touch-action: pan-y;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .font-serif {
+      font-family: 'Noto Serif KR', serif;
+    }
+
+    .font-latin-serif {
+      font-family: 'Cormorant Garamond', 'Noto Serif KR', serif;
+    }
+
+    /* 카드 전환 애니메이션 */
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(24px) scale(0.98); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-24px) scale(0.98); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .slide-in-right { animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .slide-in-left { animation: slideInLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .fade-in { animation: fadeIn 0.22s ease-out forwards; }
+
+    /* 모바일 맞춤 스크롤바 숨기기 */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* 내용 전용 미세 스크롤바 */
+    .content-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(160, 140, 120, 0.35) transparent;
+      overscroll-behavior: contain;
+    }
+    .content-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .content-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .content-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(160, 140, 120, 0.4);
+      border-radius: 4px;
+    }
+
+    /* 필터 칩 스타일 */
+    .filter-chip {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }
+    .filter-chip.active-filter {
+      background-color: var(--accent-color);
+      color: #FFFFFF !important;
+      font-weight: 700;
+      border-color: var(--accent-color);
+      box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 한 화면 100% 핏 모바일 프레임 (동적 뷰포트 높이 100dvh) */
+    .mobile-frame {
+      height: 100%;
+      height: 100dvh;
+      max-width: 520px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding-top: max(8px, env(safe-area-inset-top));
+      padding-bottom: max(6px, env(safe-area-inset-bottom));
+      padding-left: 12px;
+      padding-right: 12px;
+      box-sizing: border-box;
+    }
+
+    /* 메인 카드 스타일 */
+    .literature-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      border-radius: 1.25rem;
+    }
+
+    /* 3D 양장본 책 표지 효과 */
+    .book-cover-3d {
+      box-shadow: var(--book-shadow);
+      position: relative;
+      border-radius: 6px;
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .book-cover-3d:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+    /* 책등(Spine) 입체 하이라이트 */
+    .book-cover-3d::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 8px;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 100%);
+      pointer-events: none;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    /* 글자 크기 조절 클래스 */
+    .text-size-sm p, .text-size-sm .text-readable { font-size: 13px !important; line-height: 1.6 !important; }
+    .text-size-base p, .text-size-base .text-readable { font-size: 14.5px !important; line-height: 1.68 !important; }
+    .text-size-lg p, .text-size-lg .text-readable { font-size: 16px !important; line-height: 1.75 !important; }
+
+    /* 인용구 박스 */
+    .quote-box {
+      background-color: var(--quote-bg);
+      border-left: 3.5px solid var(--accent-color);
+    }
+
+    /* 사색 포인트 박스 */
+    .reading-point-box {
+      background-color: var(--highlight-box);
+      border: 1px dashed var(--border-color);
+    }
+
+    /* 모드 알림 배지 색상 */
+    .mode-badge-daily { background-color: var(--accent-bg); color: var(--accent-color); }
+    .mode-badge-all { background-color: #E0E7FF; color: #3730A3; }
+    .mode-badge-pub { background-color: #FEF3C7; color: #92400E; }
+    .mode-badge-cat { background-color: #DCFCE7; color: #166534; }
+
+    .book-tag-item {
+      background-color: var(--accent-bg);
+      color: var(--accent-color);
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <div class="mobile-frame">
+
+    <!-- 1. 상단 헤더: 고정 영역 (flex-shrink-0) -->
+    <header class="flex-shrink-0 pt-1 pb-1 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-lg">📚</span>
+          <h1 class="font-serif font-black text-base sm:text-lg tracking-tight" style="color: var(--text-primary)">
+            책틈 · 세계문학전집
+          </h1>
+        </div>
+        <p id="currentDateDisplay" class="text-[11px] font-medium tracking-wide mt-0.5" style="color: var(--text-muted)">
+          --
+        </p>
+      </div>
+
+      <!-- 상단 유틸리티 아이콘 바 -->
+      <div class="flex items-center gap-0.5">
+        <!-- 검색 버튼 -->
+        <button onclick="openSearchModal()" title="도서 빠른 검색" class="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition" style="color: var(--text-secondary)">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </button>
+
+        <!-- 폰트 크기 토글 -->
+        <button onclick="cycleFontSize()" title="글자 크기 변경" class="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition flex items-center justify-center text-xs font-bold" style="color: var(--text-secondary)">
+          <span class="border border-current px-1 py-0.2 rounded text-[10px]">A±</span>
+        </button>
+
+        <!-- 오디오 차임벨/효과음 토글 -->
+        <button id="soundBtn" onclick="toggleSound()" title="책장 넘김 효과음" class="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition" style="color: var(--text-secondary)">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+          </svg>
+        </button>
+
+        <!-- 테마 토글 (양장본 파피루스 / 다크 / 슬레이트) -->
+        <button onclick="cycleTheme()" title="테마 변경" class="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition" style="color: var(--text-secondary)">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 5 5 0 013-4.594V5a2 2 0 114 0v2.406A5 5 0 0113 17a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-3a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V10"></path>
+          </svg>
+        </button>
+
+        <!-- 서재 보관함(북마크) 열기 -->
+        <button onclick="openBookmarksModal()" title="내 서재 보관함" class="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition relative" style="color: var(--text-secondary)">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+          </svg>
+          <span id="bookmarkCountBadge" class="absolute top-0.5 right-0.5 bg-amber-600 text-white rounded-full text-[9px] w-3.5 h-3.5 flex items-center justify-center font-bold" style="display: none;">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. 모드 알림 배지: 고정 영역 (flex-shrink-0) -->
+    <div class="flex-shrink-0 py-0.5 flex items-center justify-between">
+      <span id="modeIndicatorBadge" class="text-[11px] font-semibold tracking-tight px-2.5 py-0.5 rounded-md mode-badge-daily">
+        ✨ 오늘의 7선 (매일 자정 자동 갱신)
+      </span>
+      <span id="libraryCountDisplay" class="text-[10px] opacity-60 font-mono">
+        총 36권 소장
+      </span>
+    </div>
+
+    <!-- 3. 필터 칩 바: 고정 영역 (flex-shrink-0) -->
+    <nav class="flex-shrink-0 py-1 flex gap-1.5 overflow-x-auto no-scrollbar text-xs">
+      <button onclick="setFilter('daily')" data-filter="daily" class="filter-chip active-filter px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        ✨ 오늘의 7선
+      </button>
+      <button onclick="setFilter('all')" data-filter="all" class="filter-chip px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        📚 전체 서재 (36)
+      </button>
+      <button onclick="setFilter('민음사')" data-filter="민음사" class="filter-chip px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        🏛️ 민음사 (18)
+      </button>
+      <button onclick="setFilter('열린책들')" data-filter="열린책들" class="filter-chip px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        📖 열린책들 (10)
+      </button>
+      <button onclick="setFilter('문학동네')" data-filter="문학동네" class="filter-chip px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        🌿 문학동네 (8)
+      </button>
+      <button onclick="setFilter('성장')" data-filter="성장" class="filter-chip px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        🌟 성장/자아
+      </button>
+      <button onclick="setFilter('실존')" data-filter="실존" class="filter-chip px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        ⚖️ 실존/철학
+      </button>
+      <button onclick="setFilter('사랑')" data-filter="사랑" class="filter-chip px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        🌹 사랑/관계
+      </button>
+      <button onclick="setFilter('사회')" data-filter="사회" class="filter-chip px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        👁️ 사회/비판
+      </button>
+      <button onclick="setFilter('모험')" data-filter="모험" class="filter-chip px-2.5 py-1 rounded-full whitespace-nowrap text-[11px]">
+        ⛵ 자유/모험
+      </button>
+    </nav>
+
+    <!-- 4. 메인 콘텐츠: 남은 높이를 꽉 채우고 넘침 방지 (flex-1 min-h-0 overflow-hidden) -->
+    <main id="swipeArea" class="flex-1 min-h-0 my-1 flex flex-col overflow-hidden relative">
+      <div id="bookCard" class="literature-card flex-1 min-h-0 flex flex-col justify-between overflow-hidden p-3.5 sm:p-4 relative transition-all">
+
+        <!-- 카드 상단 메타 바 (flex-shrink-0) -->
+        <div class="flex-shrink-0 flex items-center justify-between pb-2 border-b" style="border-color: var(--border-color)">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span id="cardPublisherBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider" style="background-color: var(--accent-bg); color: var(--accent-color)">
+              --
+            </span>
+            <span id="cardCategoryBadge" class="text-[10px] font-medium px-1.5 py-0.5 rounded border text-neutral-500" style="border-color: var(--border-color)">
+              --
+            </span>
+            <span id="pageIndicator" class="text-[11px] font-mono tracking-tight font-medium" style="color: var(--text-muted)">
+              1 / 7
+            </span>
+          </div>
+
+          <div class="flex items-center gap-1">
+            <!-- 공유/복사 버튼 -->
+            <button onclick="shareCurrentBook()" title="도서 정보 복사 및 공유" class="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition" style="color: var(--text-muted)">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+              </svg>
+            </button>
+            <!-- 북마크 별표 버튼 -->
+            <button onclick="toggleBookmark()" title="내 서재에 보관" class="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition" style="color: var(--text-muted)">
+              <svg id="bookmarkIcon" class="w-4 h-4 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 🌟 [핵심] 카드 내부 본문: 오직 이 영역만 독립 스크롤 (flex-1 min-h-0 overflow-y-auto) -->
+        <div id="cardScrollBody" class="flex-1 min-h-0 overflow-y-auto content-scrollbar py-2.5 space-y-3.5 pr-1">
+
+          <!-- 책 표지 & 도서 히어로 헤더 (클릭 시 확대 모달) -->
+          <div class="flex gap-3.5 items-start">
+            <!-- 3D 실제 책 표지 이미지 -->
+            <div class="flex-shrink-0 cursor-pointer group" onclick="openCoverZoomModal()" title="표지 크게 보기">
+              <div class="w-24 sm:w-28 h-36 sm:h-40 overflow-hidden rounded-md book-cover-3d bg-neutral-100 flex items-center justify-center relative">
+                <img id="cardBookCover" src="" alt="책 표지" class="w-full h-full object-cover">
+                <div id="cardCoverPlaceholder" style="display: none;" class="w-full h-full"></div>
+                <!-- 줌 오버레이 힌트 -->
+                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[11px] font-bold">
+                  🔍 확대
+                </div>
+              </div>
+              <p class="text-[9px] text-center text-neutral-400 mt-1">
+                탭하여 확대 🔍
+              </p>
+            </div>
+
+            <!-- 책 서지 & 평점 헤더 -->
+            <div class="flex-1 min-w-0">
+              <h2 id="cardTitle" class="font-serif font-black text-lg sm:text-xl tracking-tight leading-snug" style="color: var(--text-primary)">
+                --
+              </h2>
+              <p id="cardTitleEn" class="text-[11px] font-latin-serif italic text-neutral-500 truncate mt-0.5">
+                --
+              </p>
+              
+              <div class="mt-1.5 flex items-baseline gap-1 text-xs">
+                <span id="cardAuthor" class="font-semibold text-neutral-800 dark:text-neutral-200">--</span>
+                <span id="cardTranslator" class="text-neutral-500 text-[11px]">--</span>
+              </div>
+              <p id="cardCountryEra" class="text-[11px] text-neutral-400 mt-0.5">
+                --
+              </p>
+
+              <!-- 별점 및 평점 -->
+              <div class="mt-2 flex items-center gap-1.5">
+                <div id="cardStarsContainer" class="flex items-center">
+                  <!-- 별 SVG -->
+                </div>
+                <span id="cardRatingScore" class="font-bold text-xs text-amber-600 dark:text-amber-400">4.8</span>
+                <span id="cardReviewsCount" class="text-[10px] text-neutral-400">(리뷰 3,420+)</span>
+              </div>
+
+              <!-- 태그 필스 -->
+              <div id="cardTagsContainer" class="mt-2.5 flex flex-wrap gap-1">
+                <!-- 해시태그 칩 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 섹션 1: 📖 핵심 줄거리 -->
+          <div class="rounded-xl p-3" style="background-color: var(--bg-inner); border: 1px solid var(--border-color)">
+            <div class="flex items-center gap-1.5 mb-1.5 text-xs font-bold" style="color: var(--accent-color)">
+              <span>📖</span>
+              <span>핵심 줄거리</span>
+            </div>
+            <p id="cardPlot" class="text-readable text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed text-justify">
+              --
+            </p>
+          </div>
+
+          <!-- 섹션 2: 🎯 작품의 핵심 주제 & 의의 -->
+          <div class="rounded-xl p-3" style="background-color: var(--bg-inner); border: 1px solid var(--border-color)">
+            <div class="flex items-center gap-1.5 mb-1.5 text-xs font-bold" style="color: var(--accent-color)">
+              <span>🎯</span>
+              <span>작품의 주제 & 의의</span>
+            </div>
+            <p id="cardTheme" class="text-readable text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
+              --
+            </p>
+          </div>
+
+          <!-- 섹션 3: 💬 대표 명문장 -->
+          <div class="rounded-xl p-3 quote-box">
+            <div class="flex items-center gap-1 mb-1 text-[11px] font-bold tracking-wider uppercase" style="color: var(--accent-color)">
+              <span>💬 대표 명문장</span>
+            </div>
+            <p id="cardQuote" class="font-serif italic text-xs sm:text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed font-medium">
+              --
+            </p>
+          </div>
+
+          <!-- 섹션 4: 💡 오늘의 독서 화두 & 생각거리 -->
+          <div class="rounded-xl p-3 reading-point-box">
+            <div class="flex items-center gap-1 mb-1 text-xs font-bold" style="color: var(--accent-color)">
+              <span>💡</span>
+              <span>오늘의 독서 화두</span>
+            </div>
+            <p id="cardReadingPoint" class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              --
+            </p>
+          </div>
+
+          <!-- 섹션 5: 📑 도서 상세 서지 및 구매 링크 -->
+          <div class="flex items-center justify-between pt-1 pb-1 text-[11px] text-neutral-400 border-t" style="border-color: var(--border-color)">
+            <div class="flex items-center gap-2">
+              <span>분량: <b id="cardPageCount" class="text-neutral-600 dark:text-neutral-300">--</b></span>
+              <span>·</span>
+              <span>ISBN: <b id="cardIsbn" class="text-neutral-600 dark:text-neutral-300">--</b></span>
+            </div>
+            <a id="cardKyoboLink" href="#" target="_blank" rel="noopener" class="font-bold underline hover:opacity-80 flex items-center gap-0.5" style="color: var(--accent-color)">
+              교보문고에서 보기 ↗
+            </a>
+          </div>
+
+        </div>
+
+        <!-- 카드 하단 진행 게이지 (flex-shrink-0) -->
+        <div class="flex-shrink-0 pt-2 border-t" style="border-color: var(--border-color)">
+          <div class="w-full bg-neutral-200 dark:bg-neutral-800 h-1 rounded-full overflow-hidden mb-2">
+            <div id="readingProgressBar" class="h-full transition-all duration-300 rounded-full" style="width: 14%; background-color: var(--accent-color)"></div>
+          </div>
+
+          <!-- 하단 내비게이션 버튼 -->
+          <div class="flex items-center justify-between gap-2">
+            <button onclick="prevBook()" class="flex-1 py-2 px-3 rounded-xl border flex items-center justify-center gap-1 text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition" style="border-color: var(--border-color); color: var(--text-primary)">
+              <span>←</span>
+              <span>이전 책</span>
+            </button>
+
+            <button onclick="randomBook()" title="랜덤 셔플" class="py-2 px-3 rounded-xl border flex items-center justify-center text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition" style="border-color: var(--border-color); color: var(--accent-color); background-color: var(--accent-bg)">
+              <span>🎲 랜덤</span>
+            </button>
+
+            <button onclick="nextBook()" class="flex-1 py-2 px-3 rounded-xl border flex items-center justify-center gap-1 text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition" style="border-color: var(--border-color); color: var(--text-primary)">
+              <span>다음 책</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- =========================================================================
+       모달 다이얼로그 (검색, 보관함, 표지 확대, 토스트)
+       ========================================================================= -->
+
+  <!-- [1] 검색 모달 -->
+  <div id="searchModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="w-full max-w-md rounded-2xl p-4 flex flex-col max-h-[82vh] literature-card shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b" style="border-color: var(--border-color)">
+        <h3 class="font-serif font-bold text-base flex items-center gap-1.5" style="color: var(--text-primary)">
+          <span>🔍</span>
+          <span>세계문학 서재 검색</span>
+        </h3>
+        <button onclick="closeSearchModal()" class="p-1 rounded-full text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200">
+          ✕
+        </button>
+      </div>
+
+      <div class="py-3">
+        <input id="searchInput" type="text" oninput="handleSearchInput(event)" placeholder="제목, 작가(헤세, 카뮈 등), 출판사, 키워드 검색..." class="w-full px-3.5 py-2.5 rounded-xl border text-sm outline-none transition focus:ring-2" style="background-color: var(--bg-inner); border-color: var(--border-color); color: var(--text-primary)">
+      </div>
+
+      <div id="searchResultsContainer" class="flex-1 overflow-y-auto content-scrollbar space-y-2 pr-1 min-h-[160px]">
+        <!-- 검색 결과 카드 -->
+      </div>
+
+      <div id="searchEmptyState" style="display: none;" class="py-12 text-center text-xs text-neutral-400">
+        일치하는 도서를 찾을 수 없습니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- [2] 서재 보관함(북마크) 모달 -->
+  <div id="bookmarksModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="w-full max-w-md rounded-2xl p-4 flex flex-col max-h-[82vh] literature-card shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b" style="border-color: var(--border-color)">
+        <h3 class="font-serif font-bold text-base flex items-center gap-1.5" style="color: var(--text-primary)">
+          <span>⭐</span>
+          <span>내 서재 보관함</span>
+        </h3>
+        <button onclick="closeBookmarksModal()" class="p-1 rounded-full text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200">
+          ✕
+        </button>
+      </div>
+
+      <div id="bookmarksListContainer" class="flex-1 overflow-y-auto content-scrollbar space-y-2 py-3 pr-1 min-h-[160px]">
+        <!-- 보관함 도서 목록 -->
+      </div>
+
+      <div id="bookmarksEmptyState" style="display: none;" class="py-14 text-center">
+        <span class="text-3xl block mb-2">📖</span>
+        <p class="text-sm font-serif text-neutral-600 dark:text-neutral-400">보관된 책이 아직 없습니다.</p>
+        <p class="text-[11px] text-neutral-400 mt-1">마음에 드는 책의 상단 별표(⭐)를 눌러 서재에 담아보세요.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- [3] 표지 확대 모달 -->
+  <div id="coverZoomModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-4 hidden" onclick="closeCoverZoomModal()">
+    <div class="relative max-w-xs sm:max-w-sm flex flex-col items-center text-center" onclick="event.stopPropagation()">
+      <div class="overflow-hidden rounded-lg shadow-2xl book-cover-3d mb-3 bg-neutral-900 max-h-[68vh]">
+        <img id="coverZoomImage" src="" alt="표지 확대" class="w-full h-auto object-contain max-h-[65vh]">
+      </div>
+      <h3 id="coverZoomTitle" class="font-serif font-bold text-lg text-white">--</h3>
+      <p id="coverZoomPublisher" class="text-xs text-neutral-300 mt-0.5">--</p>
+      <button onclick="closeCoverZoomModal()" class="mt-4 px-4 py-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white text-xs font-semibold transition">
+        닫기 (✕)
+      </button>
+    </div>
+  </div>
+
+  <!-- [4] 플로팅 토스트 알림 -->
+  <div id="toastNotification" class="fixed bottom-14 left-1/2 transform -translate-x-1/2 z-50 bg-neutral-900/90 text-white text-xs px-4 py-2.5 rounded-full shadow-lg pointer-events-none transition-opacity duration-200 opacity-0 whitespace-nowrap">
+    알림 메시지
+  </div>
+
+  <!-- 앱 스크립트 로드 (순서: 데이터베이스 -> 앱 로직) -->
+  <script src="./books.js"></script>
+  <script src="./app.js"></script>
+
+  <!-- PWA 서비스워커 등록 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.log('SW registration note:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

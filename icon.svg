@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D1810" />
+      <stop offset="100%" stop-color="#140C08" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F3DF95" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#997316" />
+    </linearGradient>
+    <linearGradient id="paperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FAF7EE" />
+      <stop offset="100%" stop-color="#EDE4CE" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded rect -->
+  <rect width="512" height="512" rx="108" fill="url(#bgGrad)" />
+
+  <!-- Outer gold rim border -->
+  <rect x="24" y="24" width="464" height="464" rx="88" fill="none" stroke="url(#goldGrad)" stroke-width="6" opacity="0.4" />
+
+  <!-- Open Book Vector Graphics -->
+  <g transform="translate(66, 120)">
+    <!-- Book Backing Hardcover Left & Right -->
+    <path d="M 190 230 C 120 200 40 205 10 220 L 10 70 C 40 55 120 50 190 80 Z" fill="#8B263E" opacity="0.9" />
+    <path d="M 190 230 C 260 200 340 205 370 220 L 370 70 C 340 55 260 50 190 80 Z" fill="#8B263E" opacity="0.9" />
+
+    <!-- Left Book Pages -->
+    <path d="M 190 220 C 120 190 45 195 20 208 L 20 62 C 45 50 120 44 190 72 Z" fill="url(#paperGrad)" />
+    <!-- Page layers detail -->
+    <path d="M 190 215 C 125 186 52 191 28 203 L 28 58 C 52 47 125 41 190 68 Z" fill="#FDFBF7" />
+
+    <!-- Right Book Pages -->
+    <path d="M 190 220 C 260 190 335 195 360 208 L 360 62 C 335 50 260 44 190 72 Z" fill="url(#paperGrad)" />
+    <!-- Page layers detail -->
+    <path d="M 190 215 C 255 186 328 191 352 203 L 352 58 C 328 47 255 41 190 68 Z" fill="#FDFBF7" />
+
+    <!-- Center spine spine shadow -->
+    <path d="M 187 70 Q 190 145 187 222 L 193 222 Q 190 145 193 70 Z" fill="#4A3427" opacity="0.6" />
+
+    <!-- Golden bookmark ribbon ribbon tail -->
+    <path d="M 190 65 Q 195 160 205 245 L 190 235 L 175 245 Q 185 160 190 65 Z" fill="url(#goldGrad)" />
+
+    <!-- Elegant embossed star/sunburst above the book -->
+    <circle cx="190" cy="18" r="14" fill="url(#goldGrad)" />
+    <path d="M 190 -4 L 190 40 M 168 18 L 212 18 M 174 2 L 206 34 M 174 34 L 206 2" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round" />
+  </g>
+</svg>
