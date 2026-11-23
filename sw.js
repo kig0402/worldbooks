@@ -1,5 +1,5 @@
 // 세계문학전집 (World Literature App) Service Worker - 캐싱 및 오프라인 지원
-const CACHE_NAME = 'worldbooks-v4';
+const CACHE_NAME = 'worldbooks-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
