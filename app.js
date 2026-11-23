@@ -345,7 +345,7 @@ function renderBook(index, animation = 'none') {
     tagsContainer.appendChild(span);
   });
 
-  // 스포 없는 핵심 줄거리
+  // 핵심 줄거리
   document.getElementById('cardPlot').textContent = book.plot;
 
   // 작품의 핵심 주제 & 의의
